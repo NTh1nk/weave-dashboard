@@ -301,7 +301,7 @@ const getStatusBgColor = (status: string) => {
 }
 
 export function WorkflowCanvas() {
-  const [currentWorkflow, setCurrentWorkflow] = useState<"basic" | "ecommerce" | "performance">("basic")
+  const [currentWorkflow, setCurrentWorkflow] = useState<"basic" | "performance">("basic")
   const [nodes, setNodes] = useState<WorkflowNode[]>(basicWorkflow)
   const [draggedNode, setDraggedNode] = useState<string | null>(null)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
@@ -311,11 +311,10 @@ export function WorkflowCanvas() {
 
   const workflows = {
     basic: basicWorkflow,
-    ecommerce: ecommerceWorkflow,
     performance: performanceWorkflow
   }
 
-  const handleWorkflowChange = (workflow: "basic" | "ecommerce" | "performance") => {
+  const handleWorkflowChange = (workflow: "basic" | "performance") => {
     setCurrentWorkflow(workflow)
     setNodes(workflows[workflow])
     setSelectedNode(null)
@@ -350,7 +349,7 @@ export function WorkflowCanvas() {
       setNodes((prev) =>
         prev.map((node) =>
           node.id === draggedNode
-            ? { ...node, x: Math.max(0, Math.min(newX, 1000)), y: Math.max(0, Math.min(newY, 300)) }
+            ? { ...node, x: Math.max(0, Math.min(newX, 1200)), y: Math.max(0, Math.min(newY, 600)) }
             : node,
         ),
       )
@@ -451,13 +450,6 @@ export function WorkflowCanvas() {
             Basic QA
           </Button>
           <Button
-            variant={currentWorkflow === "ecommerce" ? "default" : "outline"}
-            size="sm"
-            onClick={() => handleWorkflowChange("ecommerce")}
-          >
-            E-commerce
-          </Button>
-          <Button
             variant={currentWorkflow === "performance" ? "default" : "outline"}
             size="sm"
             onClick={() => handleWorkflowChange("performance")}
@@ -492,13 +484,14 @@ export function WorkflowCanvas() {
         <div className="lg:col-span-2">
           <div
             ref={canvasRef}
-            className="relative w-full h-80 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 overflow-hidden"
+            className="relative w-full h-80 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 overflow-auto"
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
+            style={{ minHeight: '400px' }}
           >
             {/* SVG for connections */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none">{renderConnections()}</svg>
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ minWidth: '1200px', minHeight: '600px' }}>{renderConnections()}</svg>
 
             {/* Workflow Nodes */}
             {nodes.map((node) => (
@@ -529,7 +522,7 @@ export function WorkflowCanvas() {
 
             {/* Instructions */}
             <div className="absolute bottom-2 left-2 text-xs text-gray-500 bg-white px-2 py-1 rounded">
-              Drag nodes to reposition • Click to select • Connections show workflow flow
+              Drag nodes to reposition • Click to select • Scroll to navigate • Connections show workflow flow
             </div>
           </div>
 
