@@ -176,17 +176,17 @@ export function QADashboard() {
       </div>
 
       {/* Top Metrics Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100">Total Cost</p>
-                <p className="text-3xl font-bold">$0.91</p>
+                <p className="text-green-100 text-sm">Total Cost</p>
+                <p className="text-2xl font-bold">$0.91</p>
               </div>
-              <DollarSign className="w-8 h-8 text-green-200" />
+              <DollarSign className="w-6 h-6 text-green-200" />
             </div>
-            <div className="mt-4 h-16">
+            <div className="mt-3 h-12">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={costData.slice(-4)}>
                   <Area type="monotone" dataKey="cost" stroke="#ffffff" fill="#ffffff" fillOpacity={0.3} />
@@ -197,13 +197,13 @@ export function QADashboard() {
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600">Total Tokens</p>
-                <p className="text-2xl font-bold">2,980</p>
+                <p className="text-gray-600 text-sm">Total Tokens</p>
+                <p className="text-xl font-bold">2,980</p>
               </div>
-              <Hash className="w-6 h-6 text-gray-400" />
+              <Hash className="w-5 h-5 text-gray-400" />
             </div>
             <div className="mt-2 h-8">
               <ResponsiveContainer width="100%" height="100%">
@@ -216,13 +216,13 @@ export function QADashboard() {
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600">Cost per Token</p>
-                <p className="text-2xl font-bold">$0.0003</p>
+                <p className="text-gray-600 text-sm">Cost per Token</p>
+                <p className="text-xl font-bold">$0.0003</p>
               </div>
-              <DollarSign className="w-6 h-6 text-green-500" />
+              <DollarSign className="w-5 h-5 text-green-500" />
             </div>
             <div className="mt-2 h-8">
               <ResponsiveContainer width="100%" height="100%">
@@ -235,13 +235,13 @@ export function QADashboard() {
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600">Avg Tokens/Request</p>
-                <p className="text-2xl font-bold">54.2</p>
+                <p className="text-gray-600 text-sm">Avg Tokens/Request</p>
+                <p className="text-xl font-bold">54.2</p>
               </div>
-              <Hash className="w-6 h-6 text-blue-500" />
+              <Hash className="w-5 h-5 text-blue-500" />
             </div>
             <div className="mt-2 h-8">
               <ResponsiveContainer width="100%" height="100%">
