@@ -19,16 +19,25 @@ import {
   Pie,
   Cell,
 } from "recharts"
-import { Clock, Globe, CheckCircle, XCircle, ExternalLink, Play, Settings, Filter } from "lucide-react"
+import { Clock, Globe, CheckCircle, XCircle, ExternalLink, Play, Settings, Filter, DollarSign, Hash, ChevronDown, Video, Download, Trash2 } from "lucide-react"
+import { WorkflowCanvas } from "@/components/workflow-canvas"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // Mock data
-const performanceData = [
-  { time: "00:00", responseTime: 120, requests: 45, errors: 2 },
-  { time: "00:05", responseTime: 150, requests: 52, errors: 1 },
-  { time: "00:10", responseTime: 95, requests: 38, errors: 0 },
-  { time: "00:15", responseTime: 180, requests: 61, errors: 3 },
-  { time: "00:20", responseTime: 110, requests: 47, errors: 1 },
-  { time: "00:25", responseTime: 140, requests: 55, errors: 2 },
+const costData = [
+  { time: "00:00", cost: 0.12, tokens: 450, requests: 45 },
+  { time: "00:05", cost: 0.18, tokens: 520, requests: 52 },
+  { time: "00:10", cost: 0.09, tokens: 380, requests: 38 },
+  { time: "00:15", cost: 0.22, tokens: 610, requests: 61 },
+  { time: "00:20", cost: 0.14, tokens: 470, requests: 47 },
+  { time: "00:25", cost: 0.16, tokens: 550, requests: 55 },
 ]
 
 const networkRequests = [
@@ -53,14 +62,7 @@ const workflowSteps = [
   { id: 5, name: "User Interaction", status: "pending", duration: "-" },
 ]
 
-function WorkflowCanvas() {
-  return (
-    <div>
-      {/* Placeholder for interactive workflow canvas */}
-      <p className="text-center text-gray-500">Interactive workflow canvas will be rendered here.</p>
-    </div>
-  )
-}
+
 
 export function QADashboard() {
   return (
@@ -68,8 +70,8 @@ export function QADashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">QA Testing Dashboard</h1>
-          <p className="text-gray-600">Performance monitoring and session analysis</p>
+          <h1 className="text-3xl font-bold text-gray-900">CodeTurtle</h1>
+          <p className="text-gray-600">QA Testing Dashboard - Performance monitoring and session analysis</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" size="sm">
@@ -83,60 +85,111 @@ export function QADashboard() {
         </div>
       </div>
 
-      {/* Session Recording Section */}
-      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Play className="w-5 h-5 text-blue-600" />
-            Session Recording
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
-            <div>
-              <span className="text-gray-600">Duration:</span>
-              <p className="font-semibold">4m 32s</p>
-            </div>
-            <div>
-              <span className="text-gray-600">Region:</span>
-              <p className="font-semibold">US-East-1</p>
-            </div>
-            <div>
-              <span className="text-gray-600">Status:</span>
-              <Badge variant="default" className="bg-green-100 text-green-800">
-                Active
-              </Badge>
-            </div>
-            <div>
-              <span className="text-gray-600">BrowserBase Session:</span>
-              <Button variant="link" className="p-0 h-auto text-blue-600">
-                <ExternalLink className="w-3 h-3 mr-1" />
-                bb_session_123
+      {/* Session Recording Dropdown */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Video className="w-4 h-4" />
+                Session Recordings
+                <ChevronDown className="w-4 h-4" />
               </Button>
-            </div>
-            <div>
-              <span className="text-gray-600">Date:</span>
-              <p className="font-semibold">2024-01-15</p>
-            </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-80">
+              <DropdownMenuLabel>Recent Sessions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <Play className="w-4 h-4 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium">bb_session_123</p>
+                    <p className="text-sm text-gray-500">4m 32s • US-East-1</p>
+                  </div>
+                </div>
+                <Badge variant="default" className="bg-green-100 text-green-800">
+                  Active
+                </Badge>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Video className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium">bb_session_122</p>
+                    <p className="text-sm text-gray-500">2m 15s • US-West-2</p>
+                  </div>
+                </div>
+                <Badge variant="default" className="bg-gray-100 text-gray-800">
+                  Completed
+                </Badge>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <Video className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium">bb_session_121</p>
+                    <p className="text-sm text-gray-500">6m 48s • EU-West-1</p>
+                  </div>
+                </div>
+                <Badge variant="default" className="bg-gray-100 text-gray-800">
+                  Completed
+                </Badge>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Download className="w-4 h-4 mr-2" />
+                Download All Sessions
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Settings className="w-4 h-4 mr-2" />
+                Recording Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-red-600">
+                <Trash2 className="w-4 h-4 mr-2" />
+                Clear All Sessions
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
+          <div className="text-sm text-gray-600">
+            <span className="font-medium">Current Session:</span> bb_session_123 • 4m 32s
           </div>
-        </CardContent>
-      </Card>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm">
+            <Play className="w-4 h-4 mr-1" />
+            Start New
+          </Button>
+          <Button variant="outline" size="sm">
+            <Download className="w-4 h-4 mr-1" />
+            Export
+          </Button>
+        </div>
+      </div>
 
       {/* Top Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+        <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100">Avg Response Time</p>
-                <p className="text-3xl font-bold">142ms</p>
+                <p className="text-green-100">Total Cost</p>
+                <p className="text-3xl font-bold">$0.91</p>
               </div>
-              <Clock className="w-8 h-8 text-blue-200" />
+              <DollarSign className="w-8 h-8 text-green-200" />
             </div>
             <div className="mt-4 h-16">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={performanceData.slice(-4)}>
-                  <Area type="monotone" dataKey="responseTime" stroke="#ffffff" fill="#ffffff" fillOpacity={0.3} />
+                <AreaChart data={costData.slice(-4)}>
+                  <Area type="monotone" dataKey="cost" stroke="#ffffff" fill="#ffffff" fillOpacity={0.3} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -147,15 +200,15 @@ export function QADashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600">Total Requests</p>
-                <p className="text-2xl font-bold">1,247</p>
+                <p className="text-gray-600">Total Tokens</p>
+                <p className="text-2xl font-bold">2,980</p>
               </div>
-              <Globe className="w-6 h-6 text-gray-400" />
+              <Hash className="w-6 h-6 text-gray-400" />
             </div>
             <div className="mt-2 h-8">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={performanceData.slice(-6)}>
-                  <Bar dataKey="requests" fill="#3b82f6" />
+                <BarChart data={costData.slice(-6)}>
+                  <Bar dataKey="tokens" fill="#3b82f6" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -166,15 +219,15 @@ export function QADashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600">Success Rate</p>
-                <p className="text-2xl font-bold">94.2%</p>
+                <p className="text-gray-600">Cost per Token</p>
+                <p className="text-2xl font-bold">$0.0003</p>
               </div>
-              <CheckCircle className="w-6 h-6 text-green-500" />
+              <DollarSign className="w-6 h-6 text-green-500" />
             </div>
             <div className="mt-2 h-8">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={performanceData.slice(-6)}>
-                  <Line type="monotone" dataKey="requests" stroke="#10b981" strokeWidth={2} dot={false} />
+                <LineChart data={costData.slice(-6)}>
+                  <Line type="monotone" dataKey="cost" stroke="#10b981" strokeWidth={2} dot={false} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -185,15 +238,15 @@ export function QADashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600">Error Count</p>
-                <p className="text-2xl font-bold">23</p>
+                <p className="text-gray-600">Avg Tokens/Request</p>
+                <p className="text-2xl font-bold">54.2</p>
               </div>
-              <XCircle className="w-6 h-6 text-red-500" />
+              <Hash className="w-6 h-6 text-blue-500" />
             </div>
             <div className="mt-2 h-8">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={performanceData.slice(-6)}>
-                  <Bar dataKey="errors" fill="#ef4444" />
+                <BarChart data={costData.slice(-6)}>
+                  <Bar dataKey="tokens" fill="#3b82f6" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -282,21 +335,22 @@ export function QADashboard() {
 
       {/* Bottom Section - Performance Chart and Network Requests */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Performance Over Time */}
+        {/* Cost and Token Metrics Over Time */}
         <Card>
           <CardHeader>
-            <CardTitle>Performance Metrics</CardTitle>
+            <CardTitle>Cost & Token Metrics</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={performanceData}>
+                <LineChart data={costData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="time" />
-                  <YAxis />
+                  <YAxis yAxisId="left" />
+                  <YAxis yAxisId="right" orientation="right" />
                   <Tooltip />
-                  <Line type="monotone" dataKey="responseTime" stroke="#3b82f6" name="Response Time (ms)" />
-                  <Line type="monotone" dataKey="requests" stroke="#10b981" name="Requests" />
+                  <Line yAxisId="left" type="monotone" dataKey="cost" stroke="#10b981" name="Cost ($)" strokeWidth={2} />
+                  <Line yAxisId="right" type="monotone" dataKey="tokens" stroke="#3b82f6" name="Tokens" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
